@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -15,8 +16,10 @@ class PostController extends Controller
 
     public function show($id)
     {
-        $post = Post::findOrFail($id);
-        return view('posts.show', compact('post'));
+    $post = Post::findOrFail($id); // Fetch the post or return 404
+    $comments = Comment::where('post_id', $id)->get(); // Fetch related comments
+
+    return view('posts.show', compact('post', 'comments'));
     }
 
     public function create()
