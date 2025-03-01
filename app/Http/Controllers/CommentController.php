@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
@@ -34,10 +35,7 @@ class CommentController extends Controller
     /**
      * Display a specific comment.
      */
-    public function show(Comment $comment)
-    {
-        return response()->json($comment);
-    }
+
 
     /**
      * Update an existing comment.
