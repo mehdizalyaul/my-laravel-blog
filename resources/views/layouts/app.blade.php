@@ -69,6 +69,10 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        .dropdown:hover .dropdown-menu {
+        display: block;
+        }
     </style>
 </head>
 <body>
@@ -85,10 +89,13 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts">Articles</a>
+                    </li>
                     @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="/posts">Articles</a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/categories">Categories</a>
+                    </li>
                         <li class="nav-item">
                             <form method="POST" action="{{ route('logout') }}" class="d-inline">
                                 @csrf
@@ -105,6 +112,8 @@
                     @endauth
                 </ul>
             </div>
+
+            </div>
         </div>
     </nav>
 
@@ -120,6 +129,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
 
+    </script>
 </body>
 </html>
