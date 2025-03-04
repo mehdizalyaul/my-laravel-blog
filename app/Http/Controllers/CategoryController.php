@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -69,4 +70,14 @@ class CategoryController extends Controller
 
         return redirect()->route('categories.index');
     }
+
+    public function clear(){
+
+        Category::query()->delete();
+
+        return redirect()->route('categories.index');
+
+    }
+
+
 }
