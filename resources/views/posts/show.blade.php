@@ -5,6 +5,7 @@
         <div class="card shadow-sm p-4">
             <h1 class="mb-3">{{ $post->title }}</h1>
             <p class="text-muted"><strong>Auteur:</strong> {{ $post->user->name }}</p>
+            <button class="btn btn-primary m-1">{{ $post->category ? $post->category->name : 'Uncategorized' }}</button>
             <p class="mt-3">{{ $post->content }}</p>
 
             <div class="d-flex gap-2 mt-4">

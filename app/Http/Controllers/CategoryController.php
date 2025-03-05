@@ -15,12 +15,6 @@ class CategoryController extends Controller
         return view('categories.index', compact('categories'));
     }
 
-    // Show a single category
-    public function show($id)
-    {
-        $category = Category::findOrFail($id);
-        return view('categories.show', compact('category'));
-    }
 
     // Show form to create a new category
     public function create()

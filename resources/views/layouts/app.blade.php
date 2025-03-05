@@ -18,6 +18,7 @@
         .navbar {
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
+            margin-bottom: 50px;
         }
 
         .navbar-brand {
@@ -56,9 +57,7 @@
             color: #fff;
             padding: 20px 0;
             text-align: center;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            margin-top: 50px;
         }
 
         footer a {
@@ -70,9 +69,7 @@
             text-decoration: underline;
         }
 
-        .dropdown:hover .dropdown-menu {
-        display: block;
-        }
+
     </style>
 </head>
 <body>

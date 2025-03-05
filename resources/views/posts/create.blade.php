@@ -15,6 +15,21 @@
             <textarea name="content" class="form-control" rows="5" required>{{ old('content') }}</textarea>
         </div>
 
+        <div class="form-group">
+            <label for="categories">Categorie</label>
+
+            <select class="form-select" name="category_name" aria-label="Default select example">
+                <option selected>Open this select menu</option>
+
+                @foreach($categories as $category)
+                    <option value="{{ $category->name }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+
+
+
+        </div>
+
         <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
     </form>
 @endsection

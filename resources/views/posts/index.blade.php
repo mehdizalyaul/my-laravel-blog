@@ -3,8 +3,11 @@
 @section('content')
     <div class="container">
         <h1 class="mb-4">Liste des Articles</h1>
+        <div class="d-flex flex-wrap">
+            @foreach($posts as $post)
 
-        <!-- Success Message -->
+            @endforeach
+        </div>     <!-- Success Message -->
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -30,7 +33,10 @@
                 <tbody>
                     @foreach($posts as $post)
                         <tr>
-                            <td>{{ $post->title }}</td>
+                            <td>
+                                <button class="btn btn-primary m-1">{{ $post->category ? $post->category->name : 'Uncategorized' }}</button>
+                                {{ $post->title }}
+                            </td>
                             <td>{{ $post->user->name }}</td>
                             <td class="text-left">
                                 <a href="{{ route('posts.show', $post->id) }}" class="btn btn-info btn-sm">
