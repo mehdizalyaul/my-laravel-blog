@@ -39,7 +39,8 @@ class PostController extends Controller
     $request->validate([
         'title' => 'required|string|max:255',
         'content' => 'required|string',
-        'category_name' => 'required|string', // Ensure category_name is present
+        'category_name' => 'required|string',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
     // Get the category by its name
@@ -49,12 +50,20 @@ class PostController extends Controller
     if (!$category) {
         return redirect()->back()->with('error', 'Category not found.');
     }
-    // Create a new post with the correct category_id
+
+    // Handle the image upload
+    $imagePath = null;
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('images', 'public');
+    }
+
+    // Create a new post with the correct category_id and image path
     Post::create([
         'title' => $request->input('title'),
         'content' => $request->input('content'),
         'user_id' => auth()->id(),
-        'category_id' => $category->id, // This ensures the category is correctly linked
+        'category_id' => $category->id,
+        'image' => $imagePath,
     ]);
 
     return redirect()->route('posts.index')->with('success', 'Article créé avec succès.');
