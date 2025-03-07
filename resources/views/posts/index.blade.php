@@ -33,6 +33,9 @@
                 <tbody>
                     @foreach($posts as $post)
                         <tr>
+                            @if ($post->picture)
+                            <img src="{{ asset('storage/' . $post->picture) }}" width="200">
+                            @endif
                             <td>
                                 <button class="btn btn-primary m-1">{{ $post->category ? $post->category->name : 'Uncategorized' }}</button>
                                 {{ $post->title }}
