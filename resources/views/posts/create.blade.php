@@ -1,40 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Créer un Article</h1>
+    <div class="container">
+        <h1 class="mb-4">Créer un Article</h1>
 
-    <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group">
-            <label for="title">Titre</label>
-            <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
-        </div>
+        <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-        <div class="form-group">
-            <label for="content">Contenu</label>
-            <textarea name="content" class="form-control" rows="5" required>{{ old('content') }}</textarea>
-        </div>
+            <!-- Title Field -->
+            <div class="form-group mb-3">
+                <label for="title" class="form-label">Titre</label>
+                <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
+            </div>
 
-        <div class="form-group">
-            <label>Image:</label>
-            <input type="file" name="image">
-        </div>
+            <!-- Content Field -->
+            <div class="form-group mb-3">
+                <label for="content" class="form-label">Contenu</label>
+                <textarea name="content" class="form-control" rows="5" required>{{ old('content') }}</textarea>
+            </div>
 
-        <div class="form-group">
-            <label for="categories">Categorie</label>
+            <!-- Image Upload -->
+            <div class="form-group mb-3">
+                <label for="image" class="form-label">Image</label>
+                <input type="file" name="image" class="form-control-file border p-2">
+            </div>
 
-            <select class="form-select" name="category_name" aria-label="Default select example">
-                <option selected>Open this select menu</option>
+            <!-- Category Selection -->
+            <div class="form-group mb-3">
+                <label for="category_name" class="form-label">Categorie</label>
+                <select class="form-select" name="category_name" aria-label="Default select example" required>
+                    <option selected disabled>Open this select menu</option>
 
-                @foreach($categories as $category)
-                    <option value="{{ $category->name }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-
-
-        </div>
-
-        <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
-    </form>
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
+        </form>
+    </div>
 @endsection

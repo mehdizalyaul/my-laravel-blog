@@ -25,6 +25,7 @@
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
+                        <th scope="col">Image</th>
                         <th scope="col">Titre</th>
                         <th scope="col">Auteur</th>
                         <th scope="col" class="text-center">Actions</th>
@@ -33,11 +34,21 @@
                 <tbody>
                     @foreach($posts as $post)
                         <tr>
-                            @if ($post->picture)
-                            <img src="{{ asset('storage/' . $post->picture) }}" width="200">
-                            @endif
                             <td>
-                                <button class="btn btn-primary m-1">{{ $post->category ? $post->category->name : 'Uncategorized' }}</button>
+                                @if ($post->image)
+                                    <div class="text-center my-3">
+                                        <img src="{{ asset('storage/' . $post->image) }}" class="img-fluid rounded shadow-sm" style="width: 60px; height: 60px;">
+                                    </div>
+                                @else
+                                    <div class="text-center my-3">
+                                        <img src="{{ asset('images/default-image.webp') }}" class="img-fluid rounded shadow-sm" style="width: 60px; height: 60px;">
+                                    </div>
+                                @endif
+                            </td>
+                            <td>
+                                <button class="btn btn-primary m-1">
+                                    {{ $post->category ? $post->category->name : 'Uncategorized' }}
+                                </button>
                                 {{ $post->title }}
                             </td>
                             <td>{{ $post->user->name }}</td>
@@ -64,6 +75,7 @@
                     @endforeach
                 </tbody>
             </table>
+
         </div>
 
         <!-- Pagination -->
