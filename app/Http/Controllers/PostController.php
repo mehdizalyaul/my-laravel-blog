@@ -6,6 +6,8 @@ use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class PostController extends Controller
 {
@@ -15,7 +17,9 @@ class PostController extends Controller
         ->orderBy('created_at', 'desc')
         ->paginate(10);
 
-        return view('posts.index', compact('posts'));
+        $categories = $this->getDistict();
+
+        return view('posts.index', compact('posts','categories'));
     }
 
     public function show($id)
@@ -73,24 +77,57 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
-        return view('posts.edit', compact('post'));
+        $categories = Category::all();
+        return view('posts.edit', compact('post','categories'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required',
+            'content' => 'required|string',
+            'category_name' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
+        // Get the category by its name
+        $category = Category::where('name', $request->input('category_name'))->first();
+        if (!$category) {
+            return redirect()->back()->with('error', 'Category not found.');
+        }
+
+        // Find the post
         $post = Post::findOrFail($id);
-        $post->update([
-            'title' => $request->title,
-            'content' => $request->content,
-        ]);
 
-        return redirect()->route('posts.index');
+        // Handle the image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($post->image) {
+                Storage::delete('public/' . $post->image);
+            }
+            // Store new image
+            $imagePath = $request->file('image')->store('images', 'public');
+            $post->image = $imagePath;
+        }
+
+        // Update other fields
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->category_id = $category->id;
+
+        $post->save();
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
+
+    public function getDistict(){
+
+        $categories = Post::with('category')->get()->pluck('category.name')->unique();
+
+        return $categories;
+
+    }
+
 
     public function destroy($id)
     {
