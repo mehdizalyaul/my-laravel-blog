@@ -20,7 +20,7 @@
                 @foreach ($categories as $category)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <!-- Link to Category Details -->
-                        <a href="{{ route('categories.show', $category->id) }}" class="text-decoration-none">{{ $category->name }}</a>
+                        <p  class="text-decoration-none">{{ $category->name }}</p>
 
                         <div>
                             <!-- Edit Link -->

@@ -5,7 +5,7 @@
         <div class="card shadow-sm p-4">
             <h2 class="mb-3"><i class="fas fa-edit"></i> Modifier l'Article</h2>
 
-            <form action="{{ route('posts.update', $post->id) }}" method="POST">
+            <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -18,6 +18,21 @@
                     @enderror
                 </div>
 
+                @if ($post->image)
+                        <div class="text-left my-3">
+                            <img src="{{ asset('storage/' . $post->image) }}" class="img-fluid rounded shadow-sm" style="width: 200px; height: 200px;">
+                        </div>
+                 @else
+                        <div class="text-left my-3">
+                            <img src="{{ asset('images/default-image.webp') }}" class="img-fluid rounded shadow-sm" style="width: 200px; height: 200px;">
+                        </div>
+                @endif
+
+                <div class="form-group mb-3">
+                    <label for="image" class="form-label"><strong>Image</strong></label>
+                    <input type="file" name="image" class="form-control-file border p-2">
+                </div>
+
                 <!-- Contenu -->
                 <div class="mb-3">
                     <label for="content" class="form-label"><strong>Contenu</strong></label>
@@ -26,6 +41,22 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
+                <!-- Category Selection -->
+            <div class="form-group mb-3">
+                <label for="category_name" class="form-label"><strong>Categorie</strong></label>
+                <select class="form-select" name="category_name" aria-label="Default select example" required>
+                    <option disabled selected>{{ $post->category->name }}</option>
+
+                    @foreach($categories as $category)
+                        <option value="{{ $category->name }}"
+                            {{ $category->name == $post->category->name ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+            </div>
 
                 <!-- Boutons -->
                 <div class="d-flex gap-2 mt-4">

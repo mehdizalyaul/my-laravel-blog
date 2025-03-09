@@ -13,7 +13,8 @@
         @if ($post->image)
             <img src="{{ asset('storage/' . $post->image) }}" class="img-fluid rounded mb-3" style="max-width: 50%; height: 50%;">
         @else
-            <span class="text-muted">Aucune image</span>
+            <img src="{{ asset('images/default-image.webp') }}" class="img-fluid rounded mb-3" style="max-width: 50%; height: 50%;">
+
         @endif
     </div>
         <!-- Post Category -->

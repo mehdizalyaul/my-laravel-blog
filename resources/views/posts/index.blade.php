@@ -14,8 +14,43 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        <div class="categories-carousel">
+            <button class="left-btn disable">&lt;</button>
+            <div class="categories-carousel__container">
+
+                    <?php
+                    $index=0;
+                    $start = 0;
+                    $end = 10;
+                    echo '<button class="btn btn-primary m-1">' . 'All' . '</button>';
+
+                    foreach ($categories as $category) {
+                        if ($start > $end) {
+
+                            echo '<button class="btn btn-primary m-1 hidden" data-index="' . $start . '">' . htmlspecialchars($category) . '</button>';
+
+                            $start++;
+
+                        }else{
+
+                            echo '<button class="btn btn-primary m-1 inactive" data-index="' . $start . '">' . htmlspecialchars($category) . '</button>';
+
+                            $start++;
+                        }
+
+                    }
+                ?>
+
+            </div>
+            <button class="right-btn">&gt;</button>
+
+        </div>
+
 
         <!-- Create New Post Button -->
+        <br>
+        <br>
+
         <a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">
             <i class="fas fa-plus"></i> Créer un Article
         </a>
@@ -83,4 +118,6 @@
             {{ $posts->links('vendor.pagination.bootstrap-4') }}
         </div>
     </div>
+
+    <script src="{{ asset('build/js/index.js') }}"></script>
 @endsection
