@@ -16,7 +16,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .categories-carousel__container > .disable{
+         .disable{
             visibility: hidden;
         }
 

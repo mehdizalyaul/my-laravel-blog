@@ -21,19 +21,26 @@
                     <?php
                     $index=0;
                     $start = 0;
-                    $end = 10;
-                    echo '<button class="btn btn-primary m-1">' . 'All' . '</button>';
+                    $end = 12;
 
                     foreach ($categories as $category) {
                         if ($start > $end) {
 
-                            echo '<button class="btn btn-primary m-1 hidden" data-index="' . $start . '">' . htmlspecialchars($category) . '</button>';
+                            echo '<button class="btn btn-primary m-1 inactive hidden" data-index="' . $start . '">' . htmlspecialchars($category) . '</button>';
 
                             $start++;
 
                         }else{
+                            if($index == $start){
 
-                            echo '<button class="btn btn-primary m-1 inactive" data-index="' . $start . '">' . htmlspecialchars($category) . '</button>';
+                            echo '<button class="btn btn-primary m-1 hidden" data-index="' . $start . '">' . 'All' . '</button>';
+
+                            }else{
+
+                                echo '<button class="btn btn-primary m-1 inactive hidden" data-index="' . $start . '">' . htmlspecialchars($category) . '</button>';
+
+                            };
+
 
                             $start++;
                         }
@@ -119,5 +126,5 @@
         </div>
     </div>
 
-    <script src="{{ asset('build/js/index.js') }}"></script>
-@endsection
+    @vite(['resources/js/posts/index.js'])
+    @endsection
