@@ -128,6 +128,23 @@ class PostController extends Controller
 
     }
 
+    public function getByCategoryName($categoryName)
+    {
+        // Retrieve posts filtered by category name
+        $posts = Post::with(['user', 'category'])
+                     ->whereHas('category', function ($query) use ($categoryName) {
+                         $query->where('name', $categoryName);
+                     })
+                     ->orderBy('created_at', 'desc')
+                     ->paginate(10);
+
+        // Fetch distinct categories (if needed for category selection on the view)
+        $categories = $this->getDistict();
+
+        // Return Blade view with posts and categories
+        return view('posts.index', compact('posts', 'categories'));
+    }
+
 
     public function destroy($id)
     {

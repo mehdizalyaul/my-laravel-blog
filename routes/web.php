@@ -38,8 +38,11 @@ Route::middleware('auth')->group(function () {
 
 
     // Routes protégées pour gérer les articles (création, modification, suppression)
-    Route::resource('posts', PostController::class)->except(['index', 'show']);
+    Route::resource('posts', PostController::class)->except(['index', 'show','getByCategoryName']);
 });
+
+Route::get('/posts/category/{categoryName}', [PostController::class, 'getByCategoryName']);
+
 
 // Routes accessibles sans authentification
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
