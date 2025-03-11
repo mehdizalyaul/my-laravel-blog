@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .pagination .page-link {
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -19,4 +15,113 @@
     background-color: #e9ecef;
     border-color: #ddd;
     color: #6c757d;
+}
+
+/**/
+
+/* Owl Carousel container styling */
+.category-carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    position: relative; /* Positioning for the navigation buttons */
+    margin-bottom: 30px;
+}
+
+/* Individual category items inside the carousel */
+.category-item {
+    background-color: #0d6efd;
+    color: white;
+    border: 1px solid #0d6efd;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    z-index: 50;
+}
+
+/* Hover effect for category items */
+.category-item:hover {
+    background-color: #ffffff;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+}
+
+.category-item.active {
+    background-color: #ffffff;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+}
+
+/* Responsive adjustments for the carousel */
+@media (max-width: 1000px) {
+    .category-item {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 600px) {
+    .category-item {
+        font-size: 12px;
+        padding: 6px;
+    }
+}
+
+/* Custom styling for the Owl Carousel arrows */
+.owl-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none; /* Prevents blocking interactions with category items */
+}
+
+.owl-nav > button {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    color: #0d6efd;
+    cursor: pointer;
+    z-index: 100; /* Ensure it's above other elements */
+    pointer-events: all; /* Allow clicking only on the buttons */
+    width: 40px; /* Ensures the button does not cover too much area */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.owl-carousel .owl-nav button.owl-next,
+.owl-carousel .owl-nav button.owl-prev,
+.owl-carousel button.owl-dot {
+    background: #0b5dd72a;
+    color: white;
+    font: inherit;
+    border-radius: 8px;
+}
+
+.owl-carousel .owl-nav button.owl-next {
+    position: relative;
+    right: -50px;
+}
+
+.owl-carousel .owl-nav button.owl-prev {
+    position: relative;
+    right: 50px;
+}
+.owl-nav button:hover {
+    color: #0b5ed7;
+}
+
+/* Hide dots (pagination) */
+.owl-dots {
+    display: none;
 }

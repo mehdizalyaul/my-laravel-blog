@@ -1,7 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+<div class="category-carousel owl-carousel">
+    @foreach($categories as $category)
+        <div class="category-item" data-category="{{ $category }}">
+            <span class="category-tag">{{ $category }}</span>
+        </div>
+    @endforeach
+</div>
         <h1 class="mb-4">Liste des Articles</h1>
         <div class="d-flex flex-wrap">
             @foreach($posts as $post)
@@ -14,54 +20,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <div class="categories-carousel">
-            <button class="left-btn disable">&lt;</button>
-            <div class="categories-carousel__container">
-
-                    <?php
-                    $index=0;
-                    $start = 0;
-                    $end = 12;
-
-                    foreach ($categories as $category) {
-                        if ($start > $end) {
-
-                            echo '<button class="btn btn-primary m-1 inactive hidden" data-index="' . $start . '">' . htmlspecialchars($category) . '</button>';
-
-                            $start++;
-
-                        }else{
-                            if($index == $start){
-
-                            echo '<button class="btn btn-primary m-1 hidden" data-index="' . $start . '">' . 'All' . '</button>';
-
-                            }else{
-
-                                echo '<button class="btn btn-primary m-1 inactive hidden" data-index="' . $start . '">' . htmlspecialchars($category) . '</button>';
-
-                            };
-
-
-                            $start++;
-                        }
-
-                    }
-                ?>
-
-            </div>
-            <button class="right-btn">&gt;</button>
-
-        </div>
-
-
         <!-- Create New Post Button -->
-        <br>
-        <br>
-
         <a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">
             <i class="fas fa-plus"></i> Créer un Article
         </a>
-
         <!-- Posts Table -->
         <div class="table-responsive">
             <table class="table table-striped table-hover align-middle">
@@ -124,7 +86,12 @@
         <div class="d-flex justify-content-center">
             {{ $posts->links('vendor.pagination.bootstrap-4') }}
         </div>
-    </div>
 
-    @vite(['resources/js/posts/index.js'])
+
+<!-- jQuery (Required) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Owl Carousel JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    @vite(['resources/js/posts/index.js','resources/css/app.css'])
     @endsection
