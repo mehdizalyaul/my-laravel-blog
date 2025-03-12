@@ -50,7 +50,7 @@
                                 @endif
                             </td>
                             <td>
-                                <button class="btn btn-primary m-1">
+                                <button class="btn btn-primary m-1 post_category" data-category={{ $post->category->name }}>
                                     {{ $post->category ? $post->category->name : 'Uncategorized' }}
                                 </button>
                                 {{ $post->title }}
@@ -74,6 +74,12 @@
                                         </button>
                                     </form>
                                 @endif
+                                <button class="btn btn-outline-danger btn-sm like-btn {{$post->likes->contains('user_id', auth()->id()) ? 'liked' : ''}}"
+                                    data-post-id="{{ $post->id }}">
+                                    <i class="fas fa-heart"></i>
+                                    <span class="like-count">{{ $post->likes->count() }}</span>
+                                </button>
+
                             </td>
                         </tr>
                     @endforeach

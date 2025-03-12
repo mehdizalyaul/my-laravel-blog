@@ -18,7 +18,7 @@
         @endif
     </div>
         <!-- Post Category -->
-        <button class="btn btn-primary btn-sm mb-3">
+        <button class="btn btn-primary btn-sm mb-3 post_category" data-category="{{$post->category->name}}">
             {{ $post->category ? $post->category->name : 'Uncategorized' }}
         </button>
 
@@ -106,11 +106,6 @@
     @endguest
 </div>
 
-<!-- JavaScript to Toggle Edit Form -->
-<script>
-    function toggleEditForm(commentId) {
-        var form = document.getElementById('edit-form-' + commentId);
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    }
-</script>
+
+@vite(['resources/js/posts/show.js','resources/css/show.css'])
 @endsection
