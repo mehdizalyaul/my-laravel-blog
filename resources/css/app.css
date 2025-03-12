@@ -125,3 +125,13 @@
 .owl-dots {
     display: none;
 }
+
+.like-btn:hover {
+    background-color: #dc3545; /* Custom hover background */
+    color: #ffffff; /* Change the color of the heart icon on hover */
+}
+
+.liked {
+    background-color: #dc3545;
+    color: #ffffff;
+}

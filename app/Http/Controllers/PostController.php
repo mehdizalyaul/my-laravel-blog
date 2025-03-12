@@ -13,7 +13,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with(['user', 'category'])
+        $posts = Post::with(['user', 'category','likes'])
         ->orderBy('created_at', 'desc')
         ->paginate(10);
 
@@ -65,7 +65,7 @@ class PostController extends Controller
     Post::create([
         'title' => $request->input('title'),
         'content' => $request->input('content'),
-        'user_id' => auth()->id(),
+        'user_id' => auth()->id,
         'category_id' => $category->id,
         'image' => $imagePath,
     ]);

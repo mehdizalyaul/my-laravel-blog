@@ -25,7 +25,75 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    const postCategories = document.querySelectorAll(".post_category");
+
+    postCategories.forEach((postCategory) => {
+        postCategory.addEventListener("click", function () {
+            let category = postCategory.dataset.category;
+            goToCategoryPage(category);
+        });
+    });
+
     function goToCategoryPage(categoryName) {
         window.location.href = `/posts/category/${categoryName}`;
+    }
+
+    const likeButtons = document.querySelectorAll(".like-btn");
+    likeButtons.forEach((likeButton) => {
+        likeButton.addEventListener("click", function () {
+            if (this.classList.contains("liked")) {
+                this.classList.remove("liked");
+                let postID = this.dataset.postId;
+                UnLikePost(likeButton, postID);
+            } else {
+                this.classList.add("liked");
+                let postID = this.dataset.postId;
+                likePost(likeButton, postID);
+            }
+        });
+    });
+
+    function likePost(likeButton, post) {
+        fetch(`http://127.0.0.1:8000/posts/${post}/like`, {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    const likeCount = likeButton.querySelector(".like-count");
+
+                    likeCount.textContent = data.likes_count;
+                    window.location.href = "/posts";
+                }
+            })
+            .catch((error) => console.error("Error:", error));
+    }
+
+    function UnLikePost(likeButton, post) {
+        fetch(`http://127.0.0.1:8000/posts/${post}/like`, {
+            method: "DELETE",
+            headers: {
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    const likeCount = likeButton.querySelector(".like-count");
+
+                    likeCount.textContent = data.likes_count;
+                    window.location.href = "/posts";
+                }
+            })
+            .catch((error) => console.error("Error:", error));
     }
 });

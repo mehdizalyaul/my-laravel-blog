@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LikeController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     Route::delete('/categories', [CategoryController::class, 'clear'])->name('categories.clear');
 
+    Route::post('/posts/{post}/like', [LikeController::class, 'like'])->name('posts.like');
+    Route::delete('/posts/{post}/like', [LikeController::class, 'unlike'])->name('posts.unlike');
 
 
     // Routes protégées pour gérer les articles (création, modification, suppression)
