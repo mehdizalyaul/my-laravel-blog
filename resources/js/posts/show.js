@@ -1,7 +1,22 @@
-function toggleEditForm(commentId) {
-    var form = document.getElementById("edit-form-" + commentId);
-    form.style.display = form.style.display === "none" ? "block" : "none";
-}
+const editCommentButtons = document.querySelectorAll(".edit_comment_btn");
+
+editCommentButtons.forEach((editCommentButton) => {
+    editCommentButton.addEventListener("click", () => {
+        let commentId = editCommentButton.dataset.commentId;
+        let form = document.getElementById("edit-form-" + commentId);
+        form.style.display = form.style.display === "none" ? "block" : "none";
+    });
+});
+
+const replyCommentButtons = document.querySelectorAll(".reply_comment_btn");
+
+replyCommentButtons.forEach((replyCommentButton) => {
+    replyCommentButton.addEventListener("click", () => {
+        let commentId = replyCommentButton.dataset.commentId;
+        let form = document.getElementById("reply-form-" + commentId);
+        form.style.display = form.style.display === "none" ? "block" : "none";
+    });
+});
 
 const postCategory = document.querySelector(".post_category");
 

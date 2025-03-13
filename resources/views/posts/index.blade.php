@@ -37,7 +37,7 @@
                 </thead>
                 <tbody>
                     @foreach($posts as $post)
-                        <tr>
+                        <tr class="post_item" data-post-id="{{$post->id}}">
                             <td>
                                 @if ($post->image)
                                     <div class="text-center my-3">

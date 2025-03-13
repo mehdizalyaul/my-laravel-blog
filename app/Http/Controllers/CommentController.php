@@ -15,23 +15,23 @@ class CommentController extends Controller
      */
     public function index()
     {
-        return response()->json(Comment::all());
+    $comments = Comment::whereNull('parent_id')->with('replies')->get();
+    return response()->json($comments);
     }
 
-    /**
-     * Store a newly created comment.
-     */
+    /* Store a newly created comment.*/
+
     public function store(Request $request)
     {
         // Validate the incoming request data
         $request->validate([
-            'post_id' => 'required|exists:posts,id', // Make sure post exists
-            'content' => 'required|string|max:500',  // Content is required and has a max length
+            'post_id' => 'required|exists:posts,id',
+            'content' => 'required|string|max:500',
         ]);
 
         // Create the comment with the authenticated user's ID
         $comment = Comment::create([
-            'user_id' => Auth::id(), // Get the currently authenticated user's ID
+            'user_id' => Auth::id(),
             'post_id' => $request->post_id,
             'content' => $request->content,
         ]);
@@ -40,11 +40,6 @@ class CommentController extends Controller
     return redirect()->route('posts.show', ['id' => $request->post_id])
     ->with('success', 'Your comment has been posted!');
     }
-
-    /**
-     * Display a specific comment.
-     */
-
 
     /**
      * Update an existing comment.
@@ -60,7 +55,7 @@ class CommentController extends Controller
         $comment = Comment::findOrFail($id);
 
         // Ensure the user is the author of the comment
-        if ($comment->user_id !== auth()->id()) {
+        if ($comment->user_id !== auth()->id) {
             return back()->with('error', 'You are not authorized to update this comment.');
         }
 
@@ -82,5 +77,17 @@ class CommentController extends Controller
 
         return back()->with('success', 'Your comment has been deleted!');;
 
+    }
+
+
+    public function reply(Comment $comment, Request $request){
+
+        $comment->replies()->create([
+            'user_id' => Auth::id(),
+            'post_id' => $request->post_id,
+            'content' => $request->content,
+            'parent_id' =>$comment->id,
+        ]);
+        return redirect()->route('posts.show',$request->post_id);
     }
 }

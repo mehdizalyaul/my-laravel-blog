@@ -25,7 +25,7 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::with('category')->find($id);
-        $comments = Comment::where('post_id', $id)->get();
+        $comments = Comment::where('post_id', $id)->whereNull('parent_id')->with('replies')->get();
 
     return view('posts.show', compact('post', 'comments'));
     }

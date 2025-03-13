@@ -96,4 +96,13 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch((error) => console.error("Error:", error));
     }
+
+    const postItems = document.querySelectorAll(".post_item");
+
+    postItems.forEach((post) => {
+        post.addEventListener("click", () => {
+            let postID = post.dataset.postId;
+            window.location.href = `/posts/${postID}`;
+        });
+    });
 });

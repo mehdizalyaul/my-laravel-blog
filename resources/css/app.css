@@ -1,3 +1,74 @@
+body {
+    background-color: #f8f9fa;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.disable {
+    visibility: hidden;
+}
+
+.categories-carousel__container > .hidden {
+    display: none;
+}
+
+.categories-carousel__container > .inactive {
+    opacity: 0.5;
+}
+
+.navbar {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    margin-bottom: 50px;
+    height: 80px;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: #007bff;
+}
+
+.navbar-brand:hover {
+    color: #0056b3;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #495057;
+}
+
+.nav-link:hover {
+    color: #007bff;
+}
+
+.btn-link {
+    border: none;
+    background: none;
+    font-weight: 500;
+    color: #007bff;
+}
+
+.btn-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 50px;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
 .pagination .page-link {
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -19,17 +90,15 @@
 
 /**/
 
-/* Owl Carousel container styling */
 .category-carousel {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-    position: relative; /* Positioning for the navigation buttons */
+    position: relative;
     margin-bottom: 30px;
 }
 
-/* Individual category items inside the carousel */
 .category-item {
     background-color: #0d6efd;
     color: white;
@@ -45,7 +114,6 @@
     z-index: 50;
 }
 
-/* Hover effect for category items */
 .category-item:hover {
     background-color: #ffffff;
     color: #0d6efd;
@@ -58,7 +126,6 @@
     border: 1px solid #0d6efd;
 }
 
-/* Responsive adjustments for the carousel */
 @media (max-width: 1000px) {
     .category-item {
         font-size: 14px;
@@ -73,7 +140,6 @@
     }
 }
 
-/* Custom styling for the Owl Carousel arrows */
 .owl-nav {
     position: absolute;
     top: 50%;
@@ -81,7 +147,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    pointer-events: none; /* Prevents blocking interactions with category items */
+    pointer-events: none;
 }
 
 .owl-nav > button {
@@ -90,9 +156,9 @@
     font-size: 24px;
     color: #0d6efd;
     cursor: pointer;
-    z-index: 100; /* Ensure it's above other elements */
-    pointer-events: all; /* Allow clicking only on the buttons */
-    width: 40px; /* Ensures the button does not cover too much area */
+    z-index: 100;
+    pointer-events: all;
+    width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
@@ -121,17 +187,20 @@
     color: #0b5ed7;
 }
 
-/* Hide dots (pagination) */
 .owl-dots {
     display: none;
 }
 
 .like-btn:hover {
-    background-color: #dc3545; /* Custom hover background */
-    color: #ffffff; /* Change the color of the heart icon on hover */
+    background-color: #dc3545;
+    color: #ffffff;
 }
 
 .liked {
     background-color: #dc3545;
     color: #ffffff;
+}
+
+.post_item:hover {
+    cursor: pointer;
 }

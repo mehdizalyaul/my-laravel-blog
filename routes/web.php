@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/{post}/like', [LikeController::class, 'like'])->name('posts.like');
     Route::delete('/posts/{post}/like', [LikeController::class, 'unlike'])->name('posts.unlike');
 
+    Route::post('/comments/{comment}/reply', [CommentController::class, 'reply'])->name('comments.reply');
 
     // Routes protégées pour gérer les articles (création, modification, suppression)
     Route::resource('posts', PostController::class)->except(['index', 'show','getByCategoryName']);
