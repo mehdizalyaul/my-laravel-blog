@@ -32,4 +32,9 @@ class Comment extends Model
     {
         return $this->belongsTo(Comment::class, 'parent_id');
     }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
 }
