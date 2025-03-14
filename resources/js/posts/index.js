@@ -53,8 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    function likePost(likeButton, post) {
-        fetch(`http://127.0.0.1:8000/posts/${post}/like`, {
+    function likePost(likeButton, likeId) {
+        fetch(`http://127.0.0.1:8000/posts/${likeId}/like`, {
             method: "POST",
             headers: {
                 "X-CSRF-TOKEN": document
@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     .getAttribute("content"),
                 "Content-Type": "application/json",
             },
+            body: JSON.stringify({ likeable_type: "post" }),
         })
             .then((response) => response.json())
             .then((data) => {
@@ -75,8 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => console.error("Error:", error));
     }
 
-    function UnLikePost(likeButton, post) {
-        fetch(`http://127.0.0.1:8000/posts/${post}/like`, {
+    function UnLikePost(likeButton, likeId) {
+        fetch(`http://127.0.0.1:8000/posts/${likeId}/like`, {
             method: "DELETE",
             headers: {
                 "X-CSRF-TOKEN": document
@@ -84,9 +85,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     .getAttribute("content"),
                 "Content-Type": "application/json",
             },
+            body: JSON.stringify({ likeable_type: "post" }),
         })
             .then((response) => response.json())
             .then((data) => {
+                console.log(data);
                 if (data.success) {
                     const likeCount = likeButton.querySelector(".like-count");
 

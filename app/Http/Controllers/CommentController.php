@@ -53,9 +53,8 @@ class CommentController extends Controller
 
         // Find the comment by ID
         $comment = Comment::findOrFail($id);
-
         // Ensure the user is the author of the comment
-        if ($comment->user_id !== auth()->id) {
+        if ($comment->user_id !== Auth::id()) {
             return back()->with('error', 'You are not authorized to update this comment.');
         }
 

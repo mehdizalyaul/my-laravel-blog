@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Like;
+use App\Models\Comment;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -12,44 +13,79 @@ use Illuminate\Http\Request;
 class LikeController extends Controller
 {
 
-    public function like(Post $post)
-    {
+    public function like($likeId,Request $request)
+{
 
-        $isLiked = $post->likes()->where('user_id', Auth::id())->where('post_id',$post->id)->exists();
+    $likeableType = $request->likeable_type;
 
-    if($isLiked){
-        return response()->json(['message' => 'You already liked this post.'], 400);
-    }
+    // Check if the likeable type is 'Post'
+    if ($likeableType == 'post') {
+        // Use likeable_id to find the actual post being liked
+        $post = Post::find($likeId);  // Corrected here
+        $post->likes()->create([
+            'user_id' => Auth::id(),
+        ]);
 
-    $post->likes()->create([
-        'user_id' => Auth::id(),
-        'post_id' => $post->id,
-    ]);
-
-    return response()->json([
-        'like_count' => $post->likes()->count(),  // Count how many people liked the post
-        'message' => 'Post liked successfully.',   // Send a success message
-    ]);
-
-    }
-
-    public function unlike(Post $post)
-    {
-        $like = Like::where('user_id', Auth::id())->where('post_id', $post->id)->first();
-
-
-    if (!$like) {
-            return response()->json(['message' => 'You have not liked this post.'], 400);
-        }
-
-        // Delete the like
-        $like->delete();
-
-        // Return the updated like count
         return response()->json([
+            'like_count' => $post->likes()->count(),
+            'message' => 'Post liked successfully.',
+        ]);
+
+    } else if ($likeableType == 'comment') {
+        // Use likeable_id to find the actual comment being liked
+        $comment = Comment::find($likeId);  // Corrected here
+        $comment->likes()->create([
+            'user_id' => Auth::id(),
+        ]);
+
+        return response()->json([
+            'like_count' => $comment->likes()->count(),
+            'message' => 'Comment liked successfully.',
+        ]);
+    }
+
+    // Return error if likeable_type is neither Post nor Comment
+    return response()->json([
+        'message' => 'Invalid likeable type.',
+    ], 400);
+}
+
+
+    public function unlike($likeId,Request $request)
+    {
+
+        $likeableType = $request->likeable_type;
+
+
+          // Check if the likeable type is 'Post'
+    if ($likeableType == 'post') {
+        // Use likeable_id to find the actual post being liked
+        $post = Post::find($likeId);  // Corrected here
+        $post->likes()->where('user_id', Auth::id())->delete();
+
+          // Return the updated like count
+          return response()->json([
             'like_count' => $post->likes()->count(),
             'message' => 'Like removed successfully.',
         ]);
+
+    } else if ($likeableType == 'comment') {
+        // Use likeable_id to find the actual comment being liked
+        $comment = Comment::find($likeId);  // Corrected here
+        $comment->likes()->where('user_id', Auth::id())->delete();
+
+         // Return the updated like count
+         return response()->json([
+            'like_count' => $comment->likes()->count(),
+            'message' => 'Like removed successfully.',
+        ]);
+    }
+      // Return error if likeable_type is neither Post nor Comment
+      return response()->json([
+        'message' => 'Invalid likeable type.',
+    ], 400);
+
+
     }
 
 
