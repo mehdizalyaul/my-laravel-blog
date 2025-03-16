@@ -23,8 +23,6 @@ function replyToComment() {
     });
 }
 
-const postCategory = document.querySelector(".post_category");
-
 function handleCategoryClick(postCategory) {
     postCategory.addEventListener("click", function () {
         let category = postCategory.dataset.category;
@@ -48,10 +46,76 @@ function editReply() {
         });
     });
 }
+
+function likeComment(likeButton, likeId) {
+    fetch(`http://127.0.0.1:8000/comments/${likeId}/like`, {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ likeable_type: "comment" }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const likeCount = likeButton.querySelector(".like-count");
+
+                likeCount.textContent = data.likes_count;
+                //   window.location.href = "/comments";
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+function UnLikeComment(likeButton, likeId) {
+    fetch(`http://127.0.0.1:8000/comments/${likeId}/like`, {
+        method: "DELETE",
+        headers: {
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ likeable_type: "comment" }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const likeCount = likeButton.querySelector(".like-count");
+
+                likeCount.textContent = data.likes_count;
+                //window.location.href = "/comments";
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+function handleLikeAndUnlikeComment() {
+    const commentLikeButtons = document.querySelectorAll(".comment_like_btn");
+
+    commentLikeButtons.forEach((commentLikeButton) => {
+        commentLikeButton.addEventListener("click", function () {
+            let commentId = commentLikeButton.dataset.commentId;
+            console.log(this.classList);
+            if (this.classList.contains("liked")) {
+                this.classList.remove("liked");
+                UnLikeComment(commentLikeButton, commentId);
+            } else {
+                this.classList.add("liked");
+                likeComment(commentLikeButton, commentId);
+            }
+        });
+    });
+}
+
 function main() {
     const postCategory = document.querySelector(".post_category");
 
     handleCategoryClick(postCategory);
+    handleLikeAndUnlikeComment();
     editComment();
     replyToComment();
     editReply();

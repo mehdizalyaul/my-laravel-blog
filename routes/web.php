@@ -39,8 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/{likeId}/like', [LikeController::class, 'like'])->name('posts.like');
     Route::delete('/posts/{likeId}/like', [LikeController::class, 'unlike'])->name('posts.unlike');
 
-    //Route::post('/comments/{likeId}/like', [LikeController::class, 'like'])->name('comments.like');
-   // Route::delete('/comments/{likeId}/like', [LikeController::class, 'unlike'])->name('comments.unlike');
+    Route::post('/comments/{likeId}/like', [LikeController::class, 'like'])->name('comments.like');
+    Route::delete('/comments/{likeId}/like', [LikeController::class, 'unlike'])->name('comments.unlike');
 
     Route::post('/comments/{comment}/reply', [CommentController::class, 'reply'])->name('comments.reply');
 

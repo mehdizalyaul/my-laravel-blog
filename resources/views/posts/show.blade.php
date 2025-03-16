@@ -63,7 +63,7 @@
                     </p>
                     <p>{{ $comment->content }}</p>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-outline-danger btn-sm like-btn {{$comment->likes->contains('user_id', auth()->id()) ? 'liked' : ''}}" data-comment-id="{{ $comment->id }}">
+                        <button class="btn btn-outline-danger btn-sm comment_like_btn {{$comment->likes->contains('user_id', auth()->id()) ? 'liked' : ''}}" data-comment-id="{{ $comment->id }}">
                             <i class="fas fa-heart"></i> <span class="like-count">{{ $comment->likes->count() }}</span>
                         </button>
                         @if($comment->user_id === auth()->id())
