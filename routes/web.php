@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/posts/{likeId}/like', [LikeController::class, 'like'])->name('posts.like');
     Route::delete('/posts/{likeId}/like', [LikeController::class, 'unlike'])->name('posts.unlike');
+    Route::post('/posts/search', [PostController::class, 'getBySearchValue'])->name('posts.getBySearchValue');
+
 
     Route::post('/comments/{likeId}/like', [LikeController::class, 'like'])->name('comments.like');
     Route::delete('/comments/{likeId}/like', [LikeController::class, 'unlike'])->name('comments.unlike');
@@ -45,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/comments/{comment}/reply', [CommentController::class, 'reply'])->name('comments.reply');
 
     // Routes protégées pour gérer les articles (création, modification, suppression)
-    Route::resource('posts', PostController::class)->except(['index', 'show','getByCategoryName']);
+    Route::resource('posts', PostController::class)->except(['index', 'show','getByCategoryName','getBySearchValue']);
 });
 
 Route::get('/posts/category/{categoryName}', [PostController::class, 'getByCategoryName']);
