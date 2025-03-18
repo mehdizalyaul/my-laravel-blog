@@ -35,7 +35,7 @@
                         <th scope="col" class="text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="table_container">
                     @foreach($posts as $post)
                         <tr class="post_item" data-post-id="{{$post->id}}">
                             <td>
@@ -92,12 +92,13 @@
         <div class="d-flex justify-content-center">
             {{ $posts->links('vendor.pagination.bootstrap-4') }}
         </div>
-
-
+        <script>
+            let currentUserId = {{ auth()->id() }};
+        </script>
 <!-- jQuery (Required) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Owl Carousel JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-    @vite(['resources/js/posts/index.js','resources/css/app.css'])
+    @vite(['resources/js/posts/index.js','resources/js/posts/header.js','resources/css/app.css'])
     @endsection

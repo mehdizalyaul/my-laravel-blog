@@ -11,16 +11,39 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with(['user', 'category','likes'])
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        // Get the search value (it might be present in AJAX requests or in query params)
+        $searchValue = strtolower($request->input('search_value', ''));  // Convert input to lowercase
+
+        // Check if it's an AJAX request
+        if ($request->ajax()) {
+            // Fetch filtered posts based on the search value (case-insensitive)
+            $posts = Post::with(['user', 'category', 'likes'])
+                ->whereRaw('LOWER(title) LIKE ?', ["%{$searchValue}%"])
+                ->get();
+
+            return response()->json(['success' => true, 'posts' => $posts]);
+        }
+
+        // Build the query with relationships and ordering for regular requests
+        $query = Post::with(['user', 'category', 'likes'])
+            ->orderBy('created_at', 'desc');
+
+        // Apply the search filter if a search value is provided (case-insensitive)
+        if ($searchValue) {
+            $query->whereRaw('LOWER(title) LIKE ?', ["%{$searchValue}%"]);
+        }
+
+        // Paginate the results (10 per page)
+        $posts = $query->paginate(10);
 
         $categories = $this->getDistict();
 
-        return view('posts.index', compact('posts','categories'));
+        // Return the view with posts, categories, and search value
+        return view('posts.index', compact('posts', 'categories', 'searchValue'));
     }
+
 
     public function show($id)
     {
@@ -74,24 +97,6 @@ class PostController extends Controller
 
     return redirect()->route('posts.index')->with('success', 'Article créé avec succès.');
 }
-
-public function getBySearchValue(Request $request)
-{
-    // Get the search term from the request
-    $searchValue = $request->input('search_value');
-
-    // Check if the search term is empty
-    if (!$searchValue) {
-        return redirect()->back()->with('error', 'Veuillez entrer un terme de recherche.');
-    }
-
-    $posts = Post::where('title', 'LIKE', "%{$searchValue}%") ->orderBy('created_at', 'desc')
-    ->paginate(10);;
-
-    // Return the search results to a view
-    return view('posts.index', compact('posts'/*, 'searchValue'*/));
-}
-
 
     public function edit($id)
     {

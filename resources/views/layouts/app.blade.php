@@ -70,9 +70,10 @@
         <p>&copy; 2025 Blog, All Rights Reserved. | <a href="#">Privacy Policy</a></p>
     </footer>
 
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    @vite(['resources/css/app.css','resources/js/posts/header.js'])
+    @vite(['resources/js/posts/header.js','resources/css/app.css'])
 
 </body>
 </html>
