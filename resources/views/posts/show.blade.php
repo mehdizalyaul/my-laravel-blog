@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="search_results">
 <div class="container my-5">
     <div class="card shadow-lg p-4">
         <!-- Post Title & Author -->
@@ -160,6 +161,7 @@
     @guest
         <p class="mt-3 text-muted">Vous devez être connecté pour ajouter un commentaire.</p>
     @endguest
+</div>
 </div>
 <script>
     let currentUserId = {{ auth()->id() }};

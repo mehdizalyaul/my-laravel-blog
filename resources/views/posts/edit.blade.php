@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="search_results">
     <div class="container">
         <div class="card shadow-sm p-4">
             <h2 class="mb-3"><i class="fas fa-edit"></i> Modifier l'Article</h2>
@@ -70,5 +71,13 @@
             </form>
         </div>
     </div>
+</div>
+<script>
+    let currentUserId = {{ auth()->id() }};
+</script>
+<!-- jQuery (Required) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@vite(['resources/js/posts/header.js','resources/css/app.css'])
 @endsection
 

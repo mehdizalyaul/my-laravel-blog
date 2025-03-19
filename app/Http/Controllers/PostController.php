@@ -9,46 +9,41 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 
-class PostController extends Controller
+class   PostController extends Controller
 {
     public function index(Request $request)
     {
-          // Get the search value and convert to lowercase
-    $searchValue = strtolower($request->input('search_value', ''));
+        // Get the search value (defaults to an empty string if not set)
+        $searchValue = strtolower($request->input('search_value', ''));
 
-    // Check if the request is AJAX
-    if ($request->ajax()) {
+        // Check if it's an AJAX request (Apply search only for AJAX)
+        if ($request->ajax()) {
+            // Fetch filtered posts based on title, content, or author's name
+            $posts = Post::with(['user', 'category', 'likes'])
+                ->where(function ($query) use ($searchValue) {
+                    $query->whereRaw('LOWER(title) LIKE ?', ["%{$searchValue}%"])
+                        ->orWhereRaw('LOWER(content) LIKE ?', ["%{$searchValue}%"])
+                        ->orWhereHas('user', function ($query) use ($searchValue) {
+                            $query->whereRaw('LOWER(name) LIKE ?', ["%{$searchValue}%"]);
+                        });
+                })
+                ->get();
+
+            return response()->json(['success' => true, 'posts' => $posts]);
+        }
+
+        // Normal page load (No search applied)
         $posts = Post::with(['user', 'category', 'likes'])
-            ->whereRaw('LOWER(title) LIKE ?', ["%{$searchValue}%"])
-            ->orWhereRaw('LOWER(content) LIKE ?', ["%{$searchValue}%"])
-            ->orWhereHas('user', function ($query) use ($searchValue) {
-                $query->whereRaw('LOWER(name) LIKE ?', ["%{$searchValue}%"]);
-            })
-            ->get();
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-        return response()->json(['success' => true, 'posts' => $posts]);
-    }
-
-    // Regular page load with pagination
-    $query = Post::with(['user', 'category', 'likes'])
-        ->orderBy('created_at', 'desc');
-
-    if ($searchValue) {
-        $query->whereRaw('LOWER(title) LIKE ?', ["%{$searchValue}%"])
-            ->orWhereRaw('LOWER(content) LIKE ?', ["%{$searchValue}%"])
-            ->orWhereHas('user', function ($query) use ($searchValue) {
-                $query->whereRaw('LOWER(name) LIKE ?', ["%{$searchValue}%"]);
-            });
-    }
-
-        // Paginate the results (10 per page)
-        $posts = $query->paginate(10);
-
-        $categories = $this->getDistict();
+        // Fetch distinct categories for filtering
+        $categories = $this->getDistinctCategories(); // Ensure this function exists
 
         // Return the view with posts, categories, and search value
         return view('posts.index', compact('posts', 'categories', 'searchValue'));
     }
+
 
 
     public function show($id)
@@ -150,7 +145,7 @@ class PostController extends Controller
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
 
-    public function getDistict(){
+    public function getDistinctCategories(){
 
         $categories = Post::with('category')->get()->pluck('category.name')->unique();
 
@@ -169,7 +164,7 @@ class PostController extends Controller
                      ->paginate(10);
 
         // Fetch distinct categories (if needed for category selection on the view)
-        $categories = $this->getDistict();
+        $categories = $this->getDistinctCategories();
 
         // Return Blade view with posts and categories
         return view('posts.index', compact('posts', 'categories'));

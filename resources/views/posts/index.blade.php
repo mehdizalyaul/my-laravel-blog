@@ -9,17 +9,14 @@
     @endforeach
 </div>
         <h1 class="mb-4">Liste des Articles</h1>
-        <div class="d-flex flex-wrap">
-            @foreach($posts as $post)
-
-            @endforeach
-        </div>     <!-- Success Message -->
+           <!-- Success Message -->
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        <div class="search_results">
         <!-- Create New Post Button -->
         <a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">
             <i class="fas fa-plus"></i> Créer un Article
@@ -92,6 +89,7 @@
         <div class="d-flex justify-content-center">
             {{ $posts->links('vendor.pagination.bootstrap-4') }}
         </div>
+    </div>
         <script>
             let currentUserId = {{ auth()->id() }};
         </script>

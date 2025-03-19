@@ -99,12 +99,13 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => console.error("Error:", error));
     }
 
-    const postItems = document.querySelectorAll(".post_item");
-
-    postItems.forEach((post) => {
-        post.addEventListener("click", () => {
-            let postID = post.dataset.postId;
-            window.location.href = `/posts/${postID}`;
+    document
+        .querySelector(".search_results")
+        .addEventListener("click", (event) => {
+            const postItem = event.target.closest(".post_item");
+            if (postItem) {
+                const postID = postItem.dataset.postId;
+                window.location.href = `/posts/${postID}`;
+            }
         });
-    });
 });
