@@ -13,27 +13,33 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        // Get the search value (it might be present in AJAX requests or in query params)
-        $searchValue = strtolower($request->input('search_value', ''));  // Convert input to lowercase
+          // Get the search value and convert to lowercase
+    $searchValue = strtolower($request->input('search_value', ''));
 
-        // Check if it's an AJAX request
-        if ($request->ajax()) {
-            // Fetch filtered posts based on the search value (case-insensitive)
-            $posts = Post::with(['user', 'category', 'likes'])
-                ->whereRaw('LOWER(title) LIKE ?', ["%{$searchValue}%"])
-                ->get();
+    // Check if the request is AJAX
+    if ($request->ajax()) {
+        $posts = Post::with(['user', 'category', 'likes'])
+            ->whereRaw('LOWER(title) LIKE ?', ["%{$searchValue}%"])
+            ->orWhereRaw('LOWER(content) LIKE ?', ["%{$searchValue}%"])
+            ->orWhereHas('user', function ($query) use ($searchValue) {
+                $query->whereRaw('LOWER(name) LIKE ?', ["%{$searchValue}%"]);
+            })
+            ->get();
 
-            return response()->json(['success' => true, 'posts' => $posts]);
-        }
+        return response()->json(['success' => true, 'posts' => $posts]);
+    }
 
-        // Build the query with relationships and ordering for regular requests
-        $query = Post::with(['user', 'category', 'likes'])
-            ->orderBy('created_at', 'desc');
+    // Regular page load with pagination
+    $query = Post::with(['user', 'category', 'likes'])
+        ->orderBy('created_at', 'desc');
 
-        // Apply the search filter if a search value is provided (case-insensitive)
-        if ($searchValue) {
-            $query->whereRaw('LOWER(title) LIKE ?', ["%{$searchValue}%"]);
-        }
+    if ($searchValue) {
+        $query->whereRaw('LOWER(title) LIKE ?', ["%{$searchValue}%"])
+            ->orWhereRaw('LOWER(content) LIKE ?', ["%{$searchValue}%"])
+            ->orWhereHas('user', function ($query) use ($searchValue) {
+                $query->whereRaw('LOWER(name) LIKE ?', ["%{$searchValue}%"]);
+            });
+    }
 
         // Paginate the results (10 per page)
         $posts = $query->paginate(10);

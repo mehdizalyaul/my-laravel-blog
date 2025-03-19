@@ -161,11 +161,14 @@
         <p class="mt-3 text-muted">Vous devez être connecté pour ajouter un commentaire.</p>
     @endguest
 </div>
-
+<script>
+    let currentUserId = {{ auth()->id() }};
+</script>
 <!-- jQuery (Required) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Owl Carousel JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-@vite(['resources/js/posts/show.js','resources/js/posts/index.js','resources/css/show.css'])
+@vite(['resources/js/posts/show.js','resources/js/posts/index.js','resources/css/show.css','resources/js/posts/header.js'])
+
 @endsection
