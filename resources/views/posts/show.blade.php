@@ -6,7 +6,13 @@
     <div class="card shadow-lg p-4">
         <!-- Post Title & Author -->
         <h1 class="mb-4 text-center">{{ $post->title }}</h1>
-        <p class="text-muted text-center mb-4"><strong>Auteur:</strong> {{ $post->user->name }}</p>
+        <p class="text-muted text-center mb-4">
+            @if($post->user->image)
+                                <img src="{{ asset('storage/' . $post->user->image) }}" class="rounded-circle profile_image" alt="" >
+                            @else
+                                <img src="{{ asset('storage/profile_images/default_profile.png') }}" class="rounded-circle profile_image" alt="" >
+                            @endif
+            <strong>Auteur:</strong> {{ $post->user->name }}</p>
 
         <!-- Post Image -->
         <div class="text-center my-4">

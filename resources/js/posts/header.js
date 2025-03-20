@@ -28,16 +28,17 @@ searchButton.addEventListener("click", () => {
         .then((data) => {
             const searchResults = document.querySelector(".search_results");
 
-            if (!searchResults) {
-                console.error("Search results container not found.");
-                return;
-            }
-
             searchResults.innerHTML = ""; // Clear previous results
 
             let tableContainer = document.createElement("div");
             tableContainer.classList.add("table-responsive");
+            /*
+            let searchTitle = document.createElement("h2");
+            searchTitle.classList.add("search_value");
+            searchTitle.textContent = `Résultats pour ${data.searchValue}`;
 
+            tableContainer.appendChild(searchTitle);
+*/
             let tableBody = document.createElement("tbody");
             tableBody.classList.add("table_container");
 
@@ -146,4 +147,12 @@ searchButton.addEventListener("click", () => {
         });
 
     searchInput.value = "";
+});
+
+const profileImages = document.querySelectorAll(".profile_image");
+
+profileImages.forEach((profileImage) => {
+    profileImage.addEventListener("click", () => {
+        window.location.href = "/profile";
+    });
 });

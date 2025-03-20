@@ -204,3 +204,10 @@ footer a:hover {
 .post_item:hover {
     cursor: pointer;
 }
+
+.profile_image {
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}

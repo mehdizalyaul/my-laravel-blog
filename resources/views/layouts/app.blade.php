@@ -46,6 +46,11 @@
                         <button type="submit" class="nav-link btn btn-link">Déconnexion</button>
                     </form>
                 </li>
+                @if(auth()->user()->image)
+                <img src="{{ asset('storage/' . auth()->user()->image) }}" class="rounded-circle profile_image" alt="" >
+            @else
+                <img src="{{ asset('storage/profile_images/default_profile.png') }}" class="rounded-circle profile_image" alt="" >
+            @endif
                 @else
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('login') }}">Connexion</a>

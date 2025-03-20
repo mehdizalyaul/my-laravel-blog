@@ -52,7 +52,12 @@
                                 </button>
                                 {{ $post->title }}
                             </td>
-                            <td>{{ $post->user->name }}</td>
+                            @if($post->user->image)
+                                <td><img src="{{ asset('storage/' . $post->user->image) }}" class="rounded-circle profile_image" alt="" > {{ $post->user->name }}</td>
+                            @else
+                                <td><img src="{{ asset('storage/profile_images/default_profile.png') }}" class="rounded-circle profile_image" alt="" > {{ $post->user->name }}</td>
+                            @endif
+
                             <td class="text-left">
                                 <a href="{{ route('posts.show', $post->id) }}" class="btn btn-info btn-sm">
                                     <i class="fas fa-eye"></i> Voir
