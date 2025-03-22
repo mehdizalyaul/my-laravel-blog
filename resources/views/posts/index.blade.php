@@ -34,7 +34,7 @@
                 </thead>
                 <tbody class="table_container">
                     @foreach($posts as $post)
-                        <tr class="post_item" data-post-id="{{$post->id}}">
+                        <tr class="post_item" data-post-id="{{$post->slug}}">
                             <td>
                                 @if ($post->image)
                                     <div class="text-center my-3">
@@ -59,16 +59,16 @@
                             @endif
 
                             <td class="text-left">
-                                <a href="{{ route('posts.show', $post->id) }}" class="btn btn-info btn-sm">
+                                <a href="{{ route('posts.show', $post->slug) }}" class="btn btn-info btn-sm">
                                     <i class="fas fa-eye"></i> Voir
                                 </a>
 
                                 @if($post->user_id === auth()->id())
-                                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning btn-sm">
+                                    <a href="{{ route('posts.edit', $post->slug) }}" class="btn btn-warning btn-sm">
                                         <i class="fas fa-edit"></i> Modifier
                                     </a>
 
-                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('posts.destroy', $post->slug) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">
@@ -77,7 +77,7 @@
                                     </form>
                                 @endif
                                 <button class="btn btn-outline-danger btn-sm like-btn {{$post->likes->contains('user_id', auth()->id()) ? 'liked' : ''}}"
-                                    data-post-id="{{ $post->id }}">
+                                    data-post-id="{{ $post->slug }}">
                                     <i class="fas fa-heart"></i>
                                     <span class="like-count">{{ $post->likes->count() }}</span>
                                 </button>

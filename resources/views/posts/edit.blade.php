@@ -6,7 +6,7 @@
         <div class="card shadow-sm p-4">
             <h2 class="mb-3"><i class="fas fa-edit"></i> Modifier l'Article</h2>
 
-            <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('posts.update', $post->slug) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 

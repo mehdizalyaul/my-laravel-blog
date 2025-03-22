@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Category;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class   PostController extends Controller
 {
+
+
     public function index(Request $request)
     {
         // Get the search value (defaults to an empty string if not set)
@@ -29,7 +34,7 @@ class   PostController extends Controller
                 })
                 ->get();
 
-            return response()->json(['success' => true, 'posts' => $posts]);
+            return response()->json(['success' => true, 'posts' => $posts, 'searchValue' => $searchValue]);
         }
 
         // Normal page load (No search applied)
@@ -41,20 +46,24 @@ class   PostController extends Controller
         $categories = $this->getDistinctCategories(); // Ensure this function exists
 
         // Return the view with posts, categories, and search value
-        return view('posts.index', compact('posts', 'categories', 'searchValue'));
+        return view('posts.index', compact('posts', 'categories'));
     }
 
 
 
-    public function show($id)
+    public function show($slug)
     {
-        $post = Post::with(['user', 'category','likes'])->find($id);
-        $comments = Comment::where('post_id', $id)->whereNull('parent_id')->with('replies')->get();
+        // Retrieve the post using the slug
+        $post = Post::with(['user', 'category', 'likes'])->where('slug', $slug)->firstOrFail();
 
+        $comments = Comment::where('post_id', $post->id)
+                           ->whereNull('parent_id')
+                           ->with('replies') // Get replies of the comments
+                           ->get();
 
-
-    return view('posts.show', compact('post', 'comments'));
+        return view('posts.show', compact('post', 'comments'));
     }
+
 
     public function create()
     {
@@ -91,7 +100,7 @@ class   PostController extends Controller
     Post::create([
         'title' => $request->input('title'),
         'content' => $request->input('content'),
-        'user_id' => auth()->id,
+        'user_id' => Auth::id(),
         'category_id' => $category->id,
         'image' => $imagePath,
     ]);
@@ -99,14 +108,14 @@ class   PostController extends Controller
     return redirect()->route('posts.index')->with('success', 'Article créé avec succès.');
 }
 
-    public function edit($id)
+    public function edit($slug)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::where('slug', $slug)->firstOrFail();
         $categories = Category::all();
         return view('posts.edit', compact('post','categories'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -122,7 +131,7 @@ class   PostController extends Controller
         }
 
         // Find the post
-        $post = Post::findOrFail($id);
+        $post = Post::where('slug', $slug)->firstOrFail();;
 
         // Handle the image upload
         if ($request->hasFile('image')) {
@@ -171,9 +180,9 @@ class   PostController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy($slug)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::where('slug', $slug)->firstOrFail();
         $post->delete();
 
         return redirect()->route('posts.index');

@@ -36,18 +36,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     Route::delete('/categories', [CategoryController::class, 'clear'])->name('categories.clear');
 
-    Route::post('/posts/{likeId}/like', [LikeController::class, 'like'])->name('posts.like');
-    Route::delete('/posts/{likeId}/like', [LikeController::class, 'unlike'])->name('posts.unlike');
+    Route::post('/posts/{slug}/like', [LikeController::class, 'like'])->name('posts.like');
+    Route::delete('/posts/{slug}/like', [LikeController::class, 'unlike'])->name('posts.unlike');
     Route::post('/posts/search', [PostController::class, 'getBySearchValue'])->name('posts.getBySearchValue');
 
 
-    Route::post('/comments/{likeId}/like', [LikeController::class, 'like'])->name('comments.like');
-    Route::delete('/comments/{likeId}/like', [LikeController::class, 'unlike'])->name('comments.unlike');
+    Route::post('/comments/{slug}/like', [LikeController::class, 'like'])->name('comments.like');
+    Route::delete('/comments/{slug}/like', [LikeController::class, 'unlike'])->name('comments.unlike');
 
     Route::post('/comments/{comment}/reply', [CommentController::class, 'reply'])->name('comments.reply');
 
     // Routes protégées pour gérer les articles (création, modification, suppression)
-    Route::resource('posts', PostController::class)->except(['index', 'show','getByCategoryName','getBySearchValue']);
+    Route::resource('posts', PostController::class)->except(['index', 'show','getByCategoryName','getBySearchValue','destroy','update']);
+    Route::put('/posts/{slug}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{slug}', [PostController::class, 'destroy'])->name('posts.destroy');
+
 });
 
 Route::get('/posts/category/{categoryName}', [PostController::class, 'getByCategoryName']);
@@ -57,7 +60,7 @@ Route::get('/posts/category/{categoryName}', [PostController::class, 'getByCateg
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 // Show post with comments
 
-Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
 // Store a new comment
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');

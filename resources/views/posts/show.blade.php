@@ -40,10 +40,10 @@
             </a>
             @if($post->user_id === auth()->id())
                 <div class="d-flex gap-2">
-                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning">
+                    <a href="{{ route('posts.edit', $post->slug) }}" class="btn btn-warning">
                         <i class="fas fa-edit"></i> Modifier l'Article
                     </a>
-                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">
+                    <form action="{{ route('posts.destroy', $post->slug) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">
@@ -52,7 +52,7 @@
                     </form>
                 </div>
             @endif
-            <button class="btn btn-outline-danger btn-sm like-btn {{$post->likes->contains('user_id', auth()->id()) ? 'liked' : ''}}" data-post-id="{{ $post->id }}">
+            <button class="btn btn-outline-danger btn-sm like-btn {{$post->likes->contains('user_id', auth()->id()) ? 'liked' : ''}}" data-post-id="{{ $post->slug }}">
                 <i class="fas fa-heart"></i> <span class="like-count">{{ $post->likes->count() }}</span>
             </button>
         </div>
@@ -93,7 +93,7 @@
                     <!-- Reply Form -->
                     <form id="reply-form-{{ $comment->id }}" action="{{ route('comments.reply', $comment->id) }}" method="POST" style="display:none;" class="mt-3">
                         @csrf
-                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <input type="hidden" name="post_id" value="{{ $post->slug }}">
                         <input type="hidden" name="parent_id" value="{{ $comment->id }}">
                         <textarea name="content" class="form-control" rows="3" required></textarea>
                         <button type="submit" class="btn btn-sm btn-primary mt-2">Répondre</button>
@@ -155,7 +155,7 @@
             <h4>Ajouter un commentaire</h4>
             <form action="{{ route('comments.store') }}" method="POST">
                 @csrf
-                <input type="hidden" name="post_id" value="{{ $post->id }}">
+                <input type="hidden" name="slug" value="{{ $post->slug }}">
                 <textarea name="content" class="form-control mb-3" rows="3" placeholder="Écrivez votre commentaire..." required></textarea>
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-comment"></i> Publier
