@@ -25,20 +25,28 @@ class CommentController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'post_id' => 'required|exists:posts,id',
+            'slug' => 'required|exists:posts,slug',
             'content' => 'required|string|max:500',
         ]);
 
+        // Find the post by slug
+        $post = Post::where('slug', $request->slug)->firstOrFail();
+
+    /*    // Ensure user is authenticated before allowing comment
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to comment.');
+        }
+*/
         // Create the comment with the authenticated user's ID
         $comment = Comment::create([
             'user_id' => Auth::id(),
-            'post_id' => $request->post_id,
+            'post_id' => $post->id,
             'content' => $request->content,
         ]);
 
-       // Redirect back to the post page
-    return redirect()->route('posts.show', ['id' => $request->post_id])
-    ->with('success', 'Your comment has been posted!');
+        // Redirect back to the post page
+        return redirect()->route('posts.show', ['slug' => $post->slug])
+            ->with('success', 'Your comment has been posted!');
     }
 
     /**

@@ -11,6 +11,7 @@ return new class extends Migration
     {
         Schema::table('likes', function (Blueprint $table) {
 
+            $table->dropColumn('post_id');
 
             // Add polymorphic columns
             $table->morphs('likeable');

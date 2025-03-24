@@ -68,8 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((data) => {
                 if (data.success) {
                     const likeCount = likeButton.querySelector(".like-count");
-
-                    likeCount.textContent = data.likes_count;
+                    likeCount.textContent = data.like_count;
                     window.location.href = "/posts";
                 }
             })
@@ -77,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function UnLikePost(likeButton, likeId) {
+        console.log(likeId);
         fetch(`http://127.0.0.1:8000/posts/${likeId}/like`, {
             method: "DELETE",
             headers: {
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
                     const likeCount = likeButton.querySelector(".like-count");
 
-                    likeCount.textContent = data.likes_count;
+                    likeCount.textContent = data.like_count;
                     window.location.href = "/posts";
                 }
             })

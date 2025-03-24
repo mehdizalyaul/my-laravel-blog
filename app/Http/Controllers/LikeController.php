@@ -13,29 +13,37 @@ use Illuminate\Http\Request;
 class LikeController extends Controller
 {
 
-    public function like($likeId,Request $request)
+    public function like($slug, Request $request)
 {
-
     $likeableType = $request->likeable_type;
 
-    // Check if the likeable type is 'Post'
+    // Check if the likeable type is 'post'
     if ($likeableType == 'post') {
-        // Use likeable_id to find the actual post being liked
-        $post = Post::find($likeId);  // Corrected here
+        // Use slug to find the actual post being liked
+        $post = Post::where('slug', $slug)->firstOrFail();
+
+        // Create a like for the post
         $post->likes()->create([
             'user_id' => Auth::id(),
+            'likeable_id' => $post->id, // Set likeable_id to the post's ID
+            'likeable_type' => 'App\Models\Post', // Set likeable_type to the model's full class name
         ]);
 
         return response()->json([
             'like_count' => $post->likes()->count(),
             'message' => 'Post liked successfully.',
         ]);
+    }
+    // Check if the likeable type is 'comment'
+    else if ($likeableType == 'comment') {
+        // Use slug to find the actual comment being liked
+        $comment = Comment::where('slug', $slug)->firstOrFail();
 
-    } else if ($likeableType == 'comment') {
-        // Use likeable_id to find the actual comment being liked
-        $comment = Comment::find($likeId);  // Corrected here
+        // Create a like for the comment
         $comment->likes()->create([
             'user_id' => Auth::id(),
+            'likeable_id' => $comment->id, // Set likeable_id to the comment's ID
+            'likeable_type' => 'App\Models\Comment', // Set likeable_type to the model's full class name
         ]);
 
         return response()->json([
@@ -51,7 +59,8 @@ class LikeController extends Controller
 }
 
 
-    public function unlike($likeId,Request $request)
+
+    public function unlike($slug,Request $request)
     {
 
         $likeableType = $request->likeable_type;
@@ -60,7 +69,7 @@ class LikeController extends Controller
           // Check if the likeable type is 'Post'
     if ($likeableType == 'post') {
         // Use likeable_id to find the actual post being liked
-        $post = Post::find($likeId);  // Corrected here
+        $post = Post::where('slug', $slug)->firstOrFail();  // Corrected here
         $post->likes()->where('user_id', Auth::id())->delete();
 
           // Return the updated like count
@@ -71,7 +80,7 @@ class LikeController extends Controller
 
     } else if ($likeableType == 'comment') {
         // Use likeable_id to find the actual comment being liked
-        $comment = Comment::find($likeId);  // Corrected here
+        $comment = Comment::where('slug', $slug)->firstOrFail();  // Corrected here
         $comment->likes()->where('user_id', Auth::id())->delete();
 
          // Return the updated like count

@@ -39,7 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/{slug}/like', [LikeController::class, 'like'])->name('posts.like');
     Route::delete('/posts/{slug}/like', [LikeController::class, 'unlike'])->name('posts.unlike');
     Route::post('/posts/search', [PostController::class, 'getBySearchValue'])->name('posts.getBySearchValue');
-
+    Route::put('/posts/{slug}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{slug}', [PostController::class, 'destroy'])->name('posts.destroy');
 
     Route::post('/comments/{slug}/like', [LikeController::class, 'like'])->name('comments.like');
     Route::delete('/comments/{slug}/like', [LikeController::class, 'unlike'])->name('comments.unlike');
@@ -47,9 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/comments/{comment}/reply', [CommentController::class, 'reply'])->name('comments.reply');
 
     // Routes protégées pour gérer les articles (création, modification, suppression)
-    Route::resource('posts', PostController::class)->except(['index', 'show','getByCategoryName','getBySearchValue','destroy','update']);
-    Route::put('/posts/{slug}', [PostController::class, 'update'])->name('posts.update');
-    Route::delete('/posts/{slug}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::resource('posts', PostController::class)->except(['index', 'show','getByCategoryName','getBySearchValue']);
+
 
 });
 
